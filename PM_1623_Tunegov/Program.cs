@@ -4,11 +4,11 @@ namespace PM_1623_Tunegov
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
+            // Исходные данные Таблицы 1
             int[] supply = { 20, 45, 24, 31, 30 };
             int[] demand = { 65, 44, 41 };
-
             int[,] cost = {
                 { 5, 4, 6 },
                 { 7, 3, 3 },
@@ -21,22 +21,21 @@ namespace PM_1623_Tunegov
             int n = demand.Length;
             int[,] plan = new int[m, n];
 
-            int[] currentSupply = (int[])supply.Clone();
-            int[] currentDemand = (int[])demand.Clone();
+            int[] curSupply = (int[])supply.Clone();
+            int[] curDemand = (int[])demand.Clone();
 
+            // Расчет методом минимальных элементов
             while (true)
             {
                 int minCost = int.MaxValue;
-                int minI = -1;
-                int minJ = -1;
+                int minI = -1, minJ = -1;
 
                 for (int i = 0; i < m; i++)
                 {
-                    if (currentSupply[i] == 0) continue;
+                    if (curSupply[i] == 0) continue;
                     for (int j = 0; j < n; j++)
                     {
-                        if (currentDemand[j] == 0) continue;
-
+                        if (curDemand[j] == 0) continue;
                         if (cost[i, j] < minCost)
                         {
                             minCost = cost[i, j];
@@ -48,15 +47,15 @@ namespace PM_1623_Tunegov
 
                 if (minI == -1 || minJ == -1) break;
 
-                int quantity = Math.Min(currentSupply[minI], currentDemand[minJ]);
-                plan[minI, minJ] = quantity;
-
-                currentSupply[minI] -= quantity;
-                currentDemand[minJ] -= quantity;
+                int qty = Math.Min(curSupply[minI], curDemand[minJ]);
+                plan[minI, minJ] = qty;
+                curSupply[minI] -= qty;
+                curDemand[minJ] -= qty;
             }
 
+            // Вывод результатов
             int totalCost = 0;
-            Console.WriteLine("Опорный план перевозок:");
+            Console.WriteLine("Опорный план для Таблицы 1");
             for (int i = 0; i < m; i++)
             {
                 for (int j = 0; j < n; j++)
@@ -67,7 +66,8 @@ namespace PM_1623_Tunegov
                 Console.WriteLine();
             }
 
-            Console.WriteLine($"\nИтоговая стоимость грузоперевозки: {totalCost}");
+            Console.WriteLine($"\nИтоговая стоимость грузоперевозки = {totalCost}");
+            Console.ReadLine();
         }
     }
 }
